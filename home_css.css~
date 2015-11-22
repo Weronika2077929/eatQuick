@@ -30,7 +30,7 @@ header .big-title{
 	color:#ff6f00;
 	font-weight: bold;
 	padding:0% 1%;
-	font-size:64px;
+	font-size:48px;
 	display:inline-block;
 }
 
@@ -38,12 +38,12 @@ nav ul li {
 	margin:0% 2%;
 }
 #content{
-	padding:250px 0px;
+	padding:200px 0px;
 	margin:0% 0%;
 	text-align:center;
 	width:100%;
 	border:1px black solid;
-	height:900px;
+	height:830px;
 	background:url("images.jpg");
 	background-size:cover;
 
