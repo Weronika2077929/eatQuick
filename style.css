@@ -1,0 +1,60 @@
+
+.navbar-inverse .navbar-nav > li > a {
+  color: white;
+}
+
+.navbar-inverse .navbar-header > li > a {
+  color: white;
+}
+
+.navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+.navbar-right{
+    padding: 20px 0 0 0;
+    font-size: 20px;
+}
+
+.dropdown-menu{
+    background: #c1ffb0;
+}
+
+.orangeLogo, .orangeLogo:hover{
+    color: #cdff5c;
+    font-weight: bold;
+    padding:0% 1%;
+    font-size:64px;
+    display:inline-block;
+    text-decoration: none;
+}
+
+/*carousel*/
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+     overflow: hidden;
+    position: relative;
+      width: 100%;
+      height: 450px;
+      margin: auto;
+
+  }
+
+
+.carousel-control {
+  padding-top:10%;
+  width:5%;
+}
+
+.container{
+    width: 100%;
+}
+
+
+

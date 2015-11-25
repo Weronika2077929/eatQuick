@@ -1,0 +1,168 @@
+
+<!--statistics-->
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<html lang="en">
+<head>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="home_css.css">-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!--time line -->
+
+</head>
+<body>
+
+
+
+
+
+
+<div class="navbar navbar-inverse navbar-fixed-top container-fluid" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+        </button> <a class="orangeLogo" href="/keydash/home/">
+        EatQuick</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+
+        <ul class="nav navbar-nav navbar-right red">
+            <li><a href="/keydash/about/">About</a></li>
+
+            <li><a>Register</a></li>
+            <li><a>Login</a></li>
+
+        </ul>
+    </div>
+</div>
+
+
+<br>
+<br>
+
+<div class="container" style="margin-top:40px">
+    <div class="row">
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">
+                    <strong> SEARCH RESULTS </strong>
+                </div>
+                <div class="panel-body">
+
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Restaurant 1
+                        </div>
+                        <div class="panel-body">Details</div>
+                    </div>
+
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Restaurant 2
+                        </div>
+                        <div class="panel-body">Details</div>
+                    </div>
+
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Restaurant 3
+                        </div>
+                        <div class="panel-body">Details</div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="panel panel-default" align="center">
+                <!--google map-->
+                <div id="googleMap" style="width:100%;height:50%;"></div>
+            </div>
+
+            <!--search again -->
+        <div class="panel panel-default">
+            <div class="panel-heading" align="center">
+                <strong> Search Again </strong>
+            </div>
+            <div class="panel-body">
+                <div class="row" align="center">
+                    <!-- DROPDOWN 1-->
+
+                    <div class="col-md-6">
+                        Location
+                        <select class="selectpicker">
+                            <option>Westend</option>
+                            <option>Eastend</option>
+                            <option>City center</option>
+                            <option>South side</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        Looking for
+                        <select class="selectpicker">
+                            <option>Italian food</option>
+                            <option>Mexican food</option>
+                            <option>Indian food</option>
+                            <option>Chinese food</option>
+                            <option>Japanese food</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer " align = "center">
+                <input type="submit" class="btn btn-lg btn-success" value="Search for food">
+            </div>
+        </div>
+
+
+
+
+
+</div>
+    </div>
+</div>
+
+
+
+
+<!--google maps API-->
+<script
+        src="http://maps.googleapis.com/maps/api/js">
+</script>
+
+<script>
+    function initialize() {
+        var mapProp = {
+            center:new google.maps.LatLng(55.8580,-4.2590),
+            zoom:13,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+        var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+
+
+
+</body>
+</html>
