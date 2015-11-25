@@ -24,13 +24,24 @@ header{
 	height:20%;
 }
 
+#selections{
+	background: url("image.jpg");
+	padding: 20px 0;
+}
 
+
+.highlight{
+	background:#feffea;
+	padding:0% 1%;
+	border-radius:2px;
+	display:inline-block;
+}
 
 header .big-title{
 	color:#ff6f00;
 	font-weight: bold;
 	padding:0% 1%;
-	font-size:48px;
+	font-size:64px;
 	display:inline-block;
 }
 
@@ -38,12 +49,12 @@ nav ul li {
 	margin:0% 2%;
 }
 #content{
-	padding:200px 0px;
+	padding:250px 0px;
 	margin:0% 0%;
 	text-align:center;
 	width:100%;
 	border:1px black solid;
-	height:830px;
+	height:950px;
 	background:url("images.jpg");
 	background-size:cover;
 

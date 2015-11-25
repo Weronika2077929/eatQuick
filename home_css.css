@@ -24,7 +24,17 @@ header{
 	height:20%;
 }
 
+#selections{
+	padding: 20px 0;
+}
 
+
+.highlight{
+	background:#feffea;
+	padding:0% 1%;
+	border-radius:2px;
+	display:inline-block;
+}
 
 header .big-title{
 	color:#ff6f00;
@@ -43,7 +53,7 @@ nav ul li {
 	text-align:center;
 	width:100%;
 	border:1px black solid;
-	height:900px;
+	height:950px;
 	background:url("images.jpg");
 	background-size:cover;
 
