@@ -23,14 +23,33 @@ $(document).ready(function($){
         });
 
         setupGeo('#locationInput'); 
+        $("#searchForFoodButton").click(function(){
+          getRestaurantsForPostcode($("#locationInput").val());
+        });
     });
+
+function justEatApiHeaders(){
+  return {"Accept-Language":"en-GB","Authorization":"Basic VGVjaFRlc3RBUEk6dXNlcjI=","Accept-Tenant":"uk"}
+}
+
+function getRestaurantsForPostcode(postcode){
+  jQuery.ajax("https://public.je-apis.com/restaurants?q=" + postcode, {
+    type: "GET",
+    async: true,
+    headers: justEatApiHeaders()
+    }) .success(function( data ) {
+      console.log(data);
+    }) .error(function() {
+        console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+  });
+}
 
 function setupGeo(target){
   // Debug: 
   // 
   $(target).val("G14 0RR"); 
   return; 
-  
+
   if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(geo) {
         if (geo.coords)
