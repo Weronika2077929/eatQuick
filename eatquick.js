@@ -1,7 +1,6 @@
 $(document).ready(function($){
     Array.prototype.pushUnique = function (item){
         if(this.indexOf(item) == -1) {
-        //if(jQuery.inArray(item, this) == -1) {
             this.push(item);
             return true;
         }
@@ -43,6 +42,23 @@ function justEatApiHeaders(){
 function refreshMap(what){
   // Do it
   console.log("refreshMap called");
+
+  console.log("Filtering for cuisine pizza"); 
+  console.log(filterByCuisine(what, ["Pizza"])); 
+}
+
+function filterByCuisine(restaurants,cuisines){
+  var newArray = []
+  for(var i = 0; i < restaurants.length; i++){
+    var stop = false; 
+    for(var j = 0; j < restaurants[i].CuisineTypes.length && !stop; j++){
+      if(cuisines.indexOf(restaurants[i].CuisineTypes[j]["Name"]) != -1){
+        stop = true; 
+        newArray.push(restaurants[i]); 
+      }
+    }
+  }
+  return newArray; 
 }
 
 function getRestaurantsForPostcode(postcode){
@@ -59,6 +75,8 @@ function getRestaurantsForPostcode(postcode){
           cuisines.pushUnique(data.Restaurants[i].CuisineTypes[j]["Name"]);
         }
       }
+
+      refreshMap(data.Restaurants); 
       console.log(cuisines);
     }) .error(function() {
         console.log("Unable to get a valid response from Google Maps at postcode resolution.");
