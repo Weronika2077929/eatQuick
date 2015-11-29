@@ -1,35 +1,48 @@
 $(document).ready(function($){
-        var $timeline_block = $('.cd-timeline-block');
+    Array.prototype.pushUnique = function (item){
+        if(this.indexOf(item) == -1) {
+        //if(jQuery.inArray(item, this) == -1) {
+            this.push(item);
+            return true;
+        }
+        return false;
+    }
+    var $timeline_block = $('.cd-timeline-block');
 
-        //hide timeline blocks which are outside the viewport
+    //hide timeline blocks which are outside the viewport
+    $timeline_block.each(function(){
+        if($(this).offset().top > $(window).scrollTop()+$(window).height()*0.75) {
+            $(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+        }
+    });
+
+    //on scolling, show/animate timeline blocks when enter the viewport
+    $(window).on('scroll', function(){
         $timeline_block.each(function(){
-            if($(this).offset().top > $(window).scrollTop()+$(window).height()*0.75) {
-                $(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+            if( $(this).offset().top <= $(window).scrollTop()+$(window).height()*0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden') ) {
+                $(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
             }
-        });
-
-        //on scolling, show/animate timeline blocks when enter the viewport
-        $(window).on('scroll', function(){
-            $timeline_block.each(function(){
-                if( $(this).offset().top <= $(window).scrollTop()+$(window).height()*0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden') ) {
-                    $(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
-                }
-            });
-        });
-
-        $('.selectpicker').selectpicker({
-            style: 'btn-default',
-            size: 4
-        });
-
-        setupGeo('#locationInput'); 
-        $("#searchForFoodButton").click(function(){
-          getRestaurantsForPostcode($("#locationInput").val());
         });
     });
 
+    $('.selectpicker').selectpicker({
+        style: 'btn-default',
+        size: 4
+    });
+
+    setupGeo('#locationInput'); 
+    $("#searchForFoodButton").click(function(){
+      getRestaurantsForPostcode($("#locationInput").val());
+    });
+});
+
 function justEatApiHeaders(){
   return {"Accept-Language":"en-GB","Authorization":"Basic VGVjaFRlc3RBUEk6dXNlcjI=","Accept-Tenant":"uk"}
+}
+
+function refreshMap(what){
+  // Do it
+  console.log("refreshMap called");
 }
 
 function getRestaurantsForPostcode(postcode){
@@ -39,6 +52,14 @@ function getRestaurantsForPostcode(postcode){
     headers: justEatApiHeaders()
     }) .success(function( data ) {
       console.log(data);
+      var cuisines = [];
+      for(var i = 0; i < data.Restaurants.length; i++){
+        console.log(data.Restaurants[i]);
+        for(var j = 0; j < data.Restaurants[i].CuisineTypes.length; j++){
+          cuisines.pushUnique(data.Restaurants[i].CuisineTypes[j]["Name"]);
+        }
+      }
+      console.log(cuisines);
     }) .error(function() {
         console.log("Unable to get a valid response from Google Maps at postcode resolution.");
   });
