@@ -42,7 +42,6 @@ $(document).ready(function($){
       $("#cuisineList li.active").each(function(idx, li) {
           checkedItems.push($(li).text());
       });
-      console.log(JSON.stringify(checkedItems, null, '\t'));
 
       refreshMap(filterByCuisine(currentFoods,checkedItems)); 
     });
@@ -57,10 +56,24 @@ function refreshMap(what){
   console.log("refreshMap called");
   string = "" 
 
+  $("#searchResults").empty(); 
+
   for(var i = 0; i < what.length; i++){
     string = string + what[i].Name + ", "
+    $("#searchResults").append("<a id='resultbutton" + i + "''>" + what[i].Name + "</a><br/>")
+    $("#resultbutton" + i).click({"url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/productcategories?type=delivery"}, function(event){
+        jQuery.ajax(event.data["url"], {
+        type: "GET",
+        async: true,
+        headers: justEatApiHeaders()
+        }) .success(function( data ) {
+          alert(JSON.stringify(data.Menu.Categories));
+          console.log(JSON.stringify(data.Menu.Categories));
+        }) .error(function() {
+            console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+      });
+    });
   } 
-  alert(string);
 }
 
 function refreshCuisineList(cuisines){
@@ -161,10 +174,8 @@ function getRestaurantsForPostcode(postcode){
     async: true,
     headers: justEatApiHeaders()
     }) .success(function( data ) {
-      console.log(data);
       var cuisines = [];
       for(var i = 0; i < data.Restaurants.length; i++){
-        console.log(data.Restaurants[i]);
         for(var j = 0; j < data.Restaurants[i].CuisineTypes.length; j++){
           cuisines.pushUnique(data.Restaurants[i].CuisineTypes[j]["Name"]);
         }
@@ -172,7 +183,6 @@ function getRestaurantsForPostcode(postcode){
       currentFoods = data.Restaurants; 
       refreshMap(data.Restaurants); 
       refreshCuisineList(cuisines);
-      console.log(cuisines);
     }) .error(function() {
         console.log("Unable to get a valid response from Google Maps at postcode resolution.");
   });
@@ -199,10 +209,8 @@ function setupGeo(target){
                   var found = false; 
                   var postcode = null; 
                   for (var i = 0; !found && i < data.results.length; i++) {
-                      //console.log(data.results[i].address_components);
                       for(var j = 0; !found && j < data.results[i].address_components.length; j++){
                         if(data.results[i].address_components[j].types[0] == "postal_code"){
-                          console.log(data.results[i].address_components[j].short_name);
                           postcode = data.results[i].address_components[j].short_name; 
                           found = true; 
                         }
