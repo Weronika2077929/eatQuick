@@ -26,6 +26,11 @@ $(document).ready(function($){
     });
 
 function setupGeo(target){
+  // Debug: 
+  // 
+  $(target).val("G14 0RR"); 
+  return; 
+  
   if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(geo) {
         if (geo.coords)
