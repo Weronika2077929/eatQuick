@@ -220,14 +220,20 @@
                     }) .success(function( data ) {
                       try{
                         var found = false; 
+                        var postcode = null; 
                         for (var i = 0; !found && i < data.results.length; i++) {
                             //console.log(data.results[i].address_components);
                             for(var j = 0; !found && j < data.results[i].address_components.length; j++){
                               if(data.results[i].address_components[j].types[0] == "postal_code"){
                                 console.log(data.results[i].address_components[j].short_name);
+                                postcode = data.results[i].address_components[j].short_name; 
                                 found = true; 
                               }
                             }
+                        }
+
+                        if(found && postcode != null){
+                          $('#locationInput').val(postcode);
                         }
                       } catch(err){
                           console.log("There was a problem with postcode resolution.");
