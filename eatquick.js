@@ -1,3 +1,5 @@
+var currentFoods = [];
+
 $(document).ready(function($){
     Array.prototype.pushUnique = function (item){
         if(this.indexOf(item) == -1) {
@@ -33,6 +35,17 @@ $(document).ready(function($){
     $("#searchForFoodButton").click(function(){
       getRestaurantsForPostcode($("#locationInput").val());
     });
+
+    $('#filterByCuisineButton').on('click', function(event) {
+      event.preventDefault(); 
+      var checkedItems = [];
+      $("#cuisineList li.active").each(function(idx, li) {
+          checkedItems.push($(li).text());
+      });
+      console.log(JSON.stringify(checkedItems, null, '\t'));
+
+      refreshMap(filterByCuisine(currentFoods,checkedItems)); 
+    });
 });
 
 function justEatApiHeaders(){
@@ -42,9 +55,12 @@ function justEatApiHeaders(){
 function refreshMap(what){
   // Do it
   console.log("refreshMap called");
+  string = "" 
 
-  console.log("Filtering for cuisine pizza"); 
-  console.log(filterByCuisine(what, ["Pizza"])); 
+  for(var i = 0; i < what.length; i++){
+    string = string + what[i].Name + ", "
+  } 
+  alert(string);
 }
 
 function refreshCuisineList(cuisines){
@@ -121,16 +137,6 @@ function refreshCuisineList(cuisines){
         }
         init();
     });
-    
-    $('#get-checked-data').on('click', function(event) {
-        event.preventDefault(); 
-        var checkedItems = {}, counter = 0;
-        $("#check-list-box li.active").each(function(idx, li) {
-            checkedItems[counter] = $(li).text();
-            counter++;
-        });
-        $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
-    });
 });
 
 }
@@ -163,7 +169,7 @@ function getRestaurantsForPostcode(postcode){
           cuisines.pushUnique(data.Restaurants[i].CuisineTypes[j]["Name"]);
         }
       }
-
+      currentFoods = data.Restaurants; 
       refreshMap(data.Restaurants); 
       refreshCuisineList(cuisines);
       console.log(cuisines);
