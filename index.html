@@ -132,8 +132,8 @@
 
                               <form class="form-inline">
                                   <div class="form-group">
-                                      <label for="exampleInputName2">Location</label>
-                                      <input type="text" class="form-control" id="exampleInputName2" placeholder="Postcode">
+                                      <label for="locationInput">Location</label>
+                                      <input type="text" class="form-control" id="locationInput" placeholder="Postcode">
                                   </div>
                               </form>
                           </div>
@@ -206,6 +206,26 @@
             style: 'btn-default',
             size: 4
         });
+
+      var lon = '51.506659', lat = '-0.17149'
+
+      jQuery.ajax("http://maps.googleapis.com/maps/api/geocode/json?latlng="+lon+","+lat+"&sensor=true", {
+        type: "GET",
+        async: true
+        }) .success(function( data ) {
+          console.log(data);
+          for (var i = 0; i < data.results.length; i++) {
+              //console.log(data.results[i].address_components);
+              for(var j = 0; j < data.results[i].address_components.length; j++){
+                if(data.results[i].address_components[j].types[0] == "postal_code"){
+                  console.log(data.results[i].address_components[j].short_name);
+                }
+              }
+          }          
+        }) .error(function() {
+            console.log("ERROR");
+      });
+      
     });
 </script>
 </body>
