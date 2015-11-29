@@ -207,24 +207,43 @@
             size: 4
         });
 
-      var lon = '51.506659', lat = '-0.17149'
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(geo) {
+              if (geo.coords)
+              {
+                  var lon = geo.coords.longitude; 
+                  var lat = geo.coords.latitude; 
 
-      jQuery.ajax("http://maps.googleapis.com/maps/api/geocode/json?latlng="+lon+","+lat+"&sensor=true", {
-        type: "GET",
-        async: true
-        }) .success(function( data ) {
-          console.log(data);
-          for (var i = 0; i < data.results.length; i++) {
-              //console.log(data.results[i].address_components);
-              for(var j = 0; j < data.results[i].address_components.length; j++){
-                if(data.results[i].address_components[j].types[0] == "postal_code"){
-                  console.log(data.results[i].address_components[j].short_name);
-                }
+                  jQuery.ajax("http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true", {
+                    type: "GET",
+                    async: true
+                    }) .success(function( data ) {
+                      try{
+                        var found = false; 
+                        for (var i = 0; !found && i < data.results.length; i++) {
+                            //console.log(data.results[i].address_components);
+                            for(var j = 0; !found && j < data.results[i].address_components.length; j++){
+                              if(data.results[i].address_components[j].types[0] == "postal_code"){
+                                console.log(data.results[i].address_components[j].short_name);
+                                found = true; 
+                              }
+                            }
+                        }
+                      } catch(err){
+                          console.log("There was a problem with postcode resolution.");
+                      }
+                    }) .error(function() {
+                        console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+                  });
               }
-          }          
-        }) .error(function() {
-            console.log("ERROR");
-      });
+          });
+         }
+        else {
+          console.log("Geolocation API is not supported"); 
+        }
+
+      //var lon = '51.506659', lat = '-0.17149'
+
       
     });
 </script>
