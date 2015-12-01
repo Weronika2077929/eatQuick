@@ -75,13 +75,16 @@ function refreshMap(what){
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
 
-    $("#resultbutton" + i).click({"url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
+    $("#resultbutton" + i).click({"index": i, "array": what, "url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
         jQuery.ajax(event.data["url"], {
         type: "GET",
         async: true,
+        index: event.data.index,
+        array: event.data.array,
         headers: justEatApiHeaders()
         }) .success(function( data ) {
-            //alert(JSON.stringify(data));
+            alert(JSON.stringify(data));
+            alert(JSON.stringify(this.array[this.index]));
             $("#restaurantDescription").empty();
             $("#restaurantDescription").append(data.Description + "<br>");
 
