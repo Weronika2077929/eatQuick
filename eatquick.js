@@ -169,19 +169,57 @@ function refreshCuisineList(cuisines){
 }
 
 function filterByCuisine(restaurants,cuisines){
-  var newArray = []
+  var newArray = [];
+    var postcodes = [];
   for(var i = 0; i < restaurants.length; i++){
     var stop = false; 
     for(var j = 0; j < restaurants[i].CuisineTypes.length && !stop; j++){
       if(cuisines.indexOf(restaurants[i].CuisineTypes[j]["Name"]) != -1){
         stop = true; 
-        newArray.push(restaurants[i]); 
+        newArray.push(restaurants[i]);
+        postcodes.pushUnique(restaurants[i].Postcode);
       }
     }
   }
+
+    updateMap(postcodes);
   return newArray; 
 }
 
+function updateMap(postcodes) {
+    var myLatLng = {lat: 55.858465, lng: -4.269292};
+
+    var map = new google.maps.Map(document.getElementById('googleMap'), {
+        center: myLatLng,
+        zoom: 8	});
+
+    var geocoder = new google.maps.Geocoder();
+
+    console.log(postcodes);
+    for(var i =0; i< postcodes.length; i++) {
+        geocodeAddress(postcodes[i],geocoder,map);
+    }
+}
+
+
+function geocodeAddress(postcode,geocoder,map) {
+    geocoder.geocode({'address': postcode}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location});
+        }
+        else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+            setTimeout(function () {
+                geocodeAddress(postcode, geocoder, map);
+            }, 0.1);
+        }
+        else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    })
+}
 function getRestaurantsForPostcode(postcode){
   jQuery.ajax("https://public.je-apis.com/restaurants?q=" + postcode, {
     type: "GET",
