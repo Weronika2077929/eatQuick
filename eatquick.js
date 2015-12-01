@@ -75,14 +75,17 @@ function refreshMap(what){
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
 
-    $("#resultbutton" + i).click({"url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/productcategories?type=delivery"}, function(event){
+    $("#resultbutton" + i).click({"url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
         jQuery.ajax(event.data["url"], {
         type: "GET",
         async: true,
         headers: justEatApiHeaders()
         }) .success(function( data ) {
-          alert(JSON.stringify(data.Menu.Categories));
-          console.log(JSON.stringify(data.Menu.Categories));
+            //alert(JSON.stringify(data));
+            $("#restaurantDescription").empty();
+            $("#restaurantDescription").append(data.Description + "<br>");
+
+            console.log(JSON.stringify(data));
         }) .error(function() {
             console.log("Unable to get a valid response from Google Maps at postcode resolution.");
       });
@@ -191,7 +194,7 @@ function updateMap(postcodes) {
 
     var map = new google.maps.Map(document.getElementById('googleMap'), {
         center: myLatLng,
-        zoom: 8	});
+        zoom: 13});
 
     var geocoder = new google.maps.Geocoder();
 
