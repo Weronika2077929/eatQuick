@@ -121,35 +121,39 @@
                       <strong> Best Food in Glasgow</strong>
                   </div>
                   <div class="panel-body">
+
                       <div class="row" align="center">
-                          <div class="col-md-12">
+                          <!-- DROPDOWN 1-->
+
+                          <div class="col-md-6">
+
                               <form class="form-inline">
                                   <div class="form-group">
+                                      <label for="exampleInputName2">Location</label>
+                                      <form class="form-inline">
+                                      <div class="form-group">
                                       <label for="locationInput">Location</label>
                                       <input type="text" class="form-control" id="locationInput" placeholder="Postcode">
+                                      </div>
+                                      </form>
                                   </div>
                               </form>
-                          </div>
-                      </div>
 
-                      <div class="row" align="center">
-                          <div class="col-md-6">
-                            <div class="well text-left" style="max-height: 300px;overflow: auto;">
+                          </div>
+
+                          <div  id="cuisine" class="col-md-6" >
+                              Looking for
+                              <div class="well text-left" style="max-height: 300px;overflow: auto;">
                               <ul id="cuisineList" class="list-group checked-list-box">
                               </ul>
-                            </div>
                           </div>
-                      </div>
-
-                      <div class="row" align="center">
-                          <!--<div id="searchResults" class="col-md-12">-->
-                          <!--</div>-->
+                          </div>
                       </div>
 
                   </div>
 
                   <div class="panel-footer " align = "center">
-                      <input id="searchForFoodButton" type="submit" class="btn btn-lg btn-success" value="Search for food">
+                      <input id="searchForFoodButton" type="submit" class="btn btn-lg btn-success" value="Add cuisine type">
                       <input id="filterByCuisineButton" type="submit" class="btn btn-lg btn-success" value="Filter">
                   </div>
               </div>

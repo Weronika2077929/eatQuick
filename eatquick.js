@@ -34,6 +34,9 @@ $(document).ready(function($){
     setupGeo('#locationInput'); 
     $("#searchForFoodButton").click(function(){
       getRestaurantsForPostcode($("#locationInput").val());
+        $("#filterByCuisineButton").show();
+        $("#searchForFoodButton").hide();
+        $("#cuisine").show();
     });
 
     $('#filterByCuisineButton').on('click', function(event) {
@@ -45,6 +48,10 @@ $(document).ready(function($){
 
       refreshMap(filterByCuisine(currentFoods,checkedItems)); 
     });
+
+    //hide cuisine fiter
+    $("#cuisine").hide();
+    $("#filterByCuisineButton").hide();
 });
 
 function justEatApiHeaders(){
@@ -81,7 +88,7 @@ function refreshMap(what){
 function refreshCuisineList(cuisines){
   $("#cuisineList").empty(); 
   for(var i=0; i<cuisines.length; i++){
-    $("#cuisineList").append('<li class="list-group-item" data-checked="true">' + cuisines[i] + '</li>')
+    $("#cuisineList").append('<li class="list-group-item" data-checked="false">' + cuisines[i] + '</li>')
   }
 
 
@@ -183,7 +190,7 @@ function getRestaurantsForPostcode(postcode){
         }
       }
       currentFoods = data.Restaurants; 
-      refreshMap(data.Restaurants); 
+      //refreshMap(data.Restaurants);
       refreshCuisineList(cuisines);
     }) .error(function() {
         console.log("Unable to get a valid response from Google Maps at postcode resolution.");
