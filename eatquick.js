@@ -60,7 +60,9 @@ function refreshMap(what){
 
   for(var i = 0; i < what.length; i++){
     string = string + what[i].Name + ", "
-    $("#searchResults").append("<a id='resultbutton" + i + "''>" + what[i].Name + "</a><br/>")
+      //$("#searchResults").append("<a id='resultbutton" + i + "''>" + what[i].Name + "</a><br/>")
+      $("#searchResults").append("<div class='panel panel-success'><div class='panel-heading'><a id='resultbutton" + i + "''>" + what[i].Name + "</a></div><div class='panel-body'>Details</div></div>");
+
     $("#resultbutton" + i).click({"url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/productcategories?type=delivery"}, function(event){
         jQuery.ajax(event.data["url"], {
         type: "GET",
