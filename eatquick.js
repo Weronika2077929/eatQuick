@@ -75,30 +75,77 @@ function refreshMap(what){
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
 
-    $("#resultbutton" + i).click({"index": i, "array": what, "url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
-        jQuery.ajax(event.data["url"], {
-        type: "GET",
-        async: true,
-        index: event.data.index,
-        array: event.data.array,
-        headers: justEatApiHeaders()
-        }) .success(function( data ) {
-            //alert(JSON.stringify(data));
-            //alert(JSON.stringify(this.array[this.index]));
-            $("#restaurantName").empty();
-            $("#restaurantName").append(this.array[this.index].Name + "<br>");
-            $("#logo").empty();
-            $("#logo").append("<img src='"+ this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
-            $("#restaurantDescription").empty();
-            $("#restaurantDescription").append(data.Description + "<br>");
+    //$("#resultbutton" + i).click({"index": i, "array": what, "url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
+    //    jQuery.ajax(event.data["url"], {
+    //    type: "GET",
+    //    async: true,
+    //    index: event.data.index,
+    //    array: event.data.array,
+    //    headers: justEatApiHeaders()
+    //    }) .success(function( data ) {
+    //        //alert(JSON.stringify(data));
+    //        //alert(JSON.stringify(this.array[this.index]));
+    //        $("#restaurantName").empty();
+    //        $("#restaurantName").append(this.array[this.index].Name + "<br>");
+    //        $("#logo").empty();
+    //        $("#logo").append("<img src='"+ this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
+    //        $("#restaurantDescription").empty();
+    //        $("#restaurantDescription").append(data.Description + "<br>");
+    //
+    //
+    //        console.log(JSON.stringify(data));
+    //    }) .error(function() {
+    //        console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+    //  });
+    //});
 
-
-            console.log(JSON.stringify(data));
-        }) .error(function() {
-            console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+      $("#resultbutton" + i).click({"index": i, "array": what}, function (event) {
+          $.when(
+              $.ajax("https://public.je-apis.com/restaurants/" + event.data.array[event.data.index]["Id"] + "/details", {
+                  type: "GET",
+                  async: true,
+                  index: event.data.index,
+                  array: event.data.array,
+                  headers: justEatApiHeaders()
+              }).success(function (data) {
+                  //alert(JSON.stringify(data));
+                  //alert(JSON.stringify(this.array[this.index]));
+                  $("#restaurantName").empty();
+                  $("#restaurantName").append(this.array[this.index].Name + "<br>");
+                  $("#logo").empty();
+                  $("#logo").append("<img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
+                  $("#restaurantDescription").empty();
+                  $("#restaurantDescription").append(data.Description + "<br>");
+                  console.log(JSON.stringify(data));
+              }).error(function () {
+                  console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+              }),
+              $.ajax("https://public.je-apis.com/restaurants/" + event.data.array[event.data.index]["Id"] + "/reviews", {
+                  type: "GET",
+                  async: true,
+                  index: event.data.index,
+                  array: event.data.array,
+                  headers: justEatApiHeaders()
+              }).success(function (data) {
+                  //alert(JSON.stringify(data));
+                  //alert(JSON.stringify(this.array[this.index]));
+                  $("#restaurantName").empty();
+                  $("#restaurantName").append(this.array[this.index].Name + "<br>");
+                  $("#logo").empty();
+                  $("#logo").append("<img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
+                  $("#restaurantDescription").empty();
+                  $("#restaurantDescription").append(data.Description + "<br>");
+                  console.log(JSON.stringify(data));
+              }).error(function () {
+                  console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+              })
+          ).done(function (a1, a2) {
+                  alert("We got what we came for!");
+              })
       });
-    });
-  } 
+
+
+  }
 }
 
 function refreshCuisineList(cuisines){
