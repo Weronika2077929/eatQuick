@@ -83,10 +83,15 @@ function refreshMap(what){
         array: event.data.array,
         headers: justEatApiHeaders()
         }) .success(function( data ) {
-            alert(JSON.stringify(data));
-            alert(JSON.stringify(this.array[this.index]));
+            //alert(JSON.stringify(data));
+            //alert(JSON.stringify(this.array[this.index]));
+            $("#restaurantName").empty();
+            $("#restaurantName").append(this.array[this.index].Name + "<br>");
+            $("#logo").empty();
+            $("#logo").append("<img src='"+ this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
             $("#restaurantDescription").empty();
             $("#restaurantDescription").append(data.Description + "<br>");
+
 
             console.log(JSON.stringify(data));
         }) .error(function() {
