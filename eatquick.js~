@@ -45,15 +45,12 @@ $(document).ready(function($){
       $("#cuisineList li.active").each(function(idx, li) {
           checkedItems.push($(li).text());
       });
-
-	refreshMap(filterByCuisine(currentFoods,checkedItems));
-
-
 	$("body, html").animate({ 
             scrollTop: $( $(this).attr('href') ).offset().top
         }, 600);
 
-      
+
+      refreshMap(filterByCuisine(currentFoods,checkedItems)); 
     });
 
     //hide cuisine fiter

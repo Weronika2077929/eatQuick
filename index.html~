@@ -154,7 +154,7 @@
 
                   <div class="panel-footer " align = "center">
                       <input id="searchForFoodButton" type="submit" class="btn btn-lg btn-success" value="Add cuisine type">
-                      <input id="filterByCuisineButton" type="submit" href="#resultBlock" class="btn btn-lg btn-success" value="Filter">
+                      <input id="filterByCuisineButton" type="submit" href="#searchResults" class="btn btn-lg btn-success" value="Filter">
                   </div>
               </div>
 
@@ -205,7 +205,7 @@
 
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading" id="resultBlock" align="center">
+                    <div class="panel-heading" align="center">
                         <strong> SEARCH RESULTS </strong>
                     </div>
                     <div class="panel-body">
