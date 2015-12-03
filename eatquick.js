@@ -123,22 +123,19 @@ $(document).ready(function($){
           checkedItems.push($(li).text());
       });
 
-<<<<<<< HEAD
-
 	//refreshMap(orderByName(filterByCuisine(currentFoods,checkedItems)));
         refreshMap(orderByRating(filterByCuisine(currentFoods,checkedItems)));
 
-	$("body, html").animate({ 
-=======
-      if(checkedItems.length == 0){
+	    if(checkedItems.length == 0){
         $("#cuisineList li").each(function(idx, li) {
             checkedItems.push($(li).text());
          });
       }
+
 	refreshMap(filterByCuisine(currentFoods,checkedItems));
-  $("#restaurantProfile").show();
+  $("#searchFirstPage").hide();
+  $("#restaurantProfile").hide();
   $("#resultsContainer").show();
-  $("#searchPage").hide();
 
 	/*$("body, html").animate({ 
 >>>>>>> fc396f075547284ceedab1355c82d78d60d8c9c6
@@ -200,6 +197,9 @@ function refreshMap(what){
 
       $("#resultbutton" + i).click({"index": i, "array": what}, function (event) {
 	clicks++;
+      $("#searchFirstPage").hide();
+      $("#restaurantProfile").show();
+      $("#resultsContainer").hide();
 
 	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
           $.when(
