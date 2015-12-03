@@ -7,6 +7,9 @@ $(document).ready(function($){
     var click_queue = [];
     var fitts = [];
 
+    $("#restaurantProfile").hide();
+    $("#resultsContainer").hide();
+
     $("#fitts").click(function(e){
         var button = document.elementFromPoint(e.clientX, e.clientY);
         console.log(button.value);
@@ -112,12 +115,19 @@ $(document).ready(function($){
           checkedItems.push($(li).text());
       });
 
+      if(checkedItems.length == 0){
+        $("#cuisineList li").each(function(idx, li) {
+            checkedItems.push($(li).text());
+         });
+      }
 	refreshMap(filterByCuisine(currentFoods,checkedItems));
+  $("#restaurantProfile").show();
+  $("#resultsContainer").show();
+  $("#searchPage").hide();
 
-
-	$("body, html").animate({ 
+	/*$("body, html").animate({ 
             scrollTop: $( $(this).attr('href') ).offset().top
-        }, 600);
+        }, 600);*/
 
       
     });
