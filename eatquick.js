@@ -1,4 +1,5 @@
 var currentFoods = [];
+var clicks = 0;
 
 $(document).ready(function($){
     Array.prototype.pushUnique = function (item){
@@ -33,6 +34,8 @@ $(document).ready(function($){
 
     setupGeo('#locationInput'); 
     $("#searchForFoodButton").click(function(){
+	clicks++;
+	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
       getRestaurantsForPostcode($("#locationInput").val());
         $("#filterByCuisineButton").show();
         $("#searchForFoodButton").hide();
@@ -40,6 +43,9 @@ $(document).ready(function($){
     });
 
     $('#filterByCuisineButton').on('click', function(event) {
+	clicks++;
+
+	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
       event.preventDefault(); 
       var checkedItems = [];
       $("#cuisineList li.active").each(function(idx, li) {
@@ -107,6 +113,9 @@ function refreshMap(what){
     //});
 
       $("#resultbutton" + i).click({"index": i, "array": what}, function (event) {
+	clicks++;
+
+	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
           $.when(
               $.ajax("https://public.je-apis.com/restaurants/" + event.data.array[event.data.index]["Id"] + "/details", {
                   type: "GET",
@@ -190,6 +199,8 @@ function refreshCuisineList(cuisines){
 
         // Event Handlers
         $widget.on('click', function () {
+	    clicks++;
+	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
             $checkbox.prop('checked', !$checkbox.is(':checked'));
             $checkbox.triggerHandler('change');
             updateDisplay();
