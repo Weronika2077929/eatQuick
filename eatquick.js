@@ -83,8 +83,8 @@ function refreshMap(what){
       //$("#searchResults").append("<a id='resultbutton" + i + "''>" + what[i].Name + "</a><br/>")
       $("#searchResults").append("<div class='panel panel-success'><div class='panel-heading'><a id='resultbutton" + i + "'' href=\"#restaurantProfile\">" + what[i].Name + "</a></div><div class='panel-body'>"+
       what[i].Address+ "<br>"+
-      what[i].Postcode + "<br> Rating: "+
-      what[i].RatingStars +
+      what[i].Postcode + "<br>" +
+      "<div class='star-ratings-sprite'><span style='width:" + getPercentageRating(what[i].RatingStars) + "%' class='rating'></span></div>" +
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
 
@@ -128,7 +128,6 @@ function refreshMap(what){
                   for(var i = 0; i < data.OpeningTimes.length; i++){
                       openingTimes += data.OpeningTimes[i].Key + data.OpeningTimes[i].Open + "-" + data.OpeningTimes[i].Closed + "<br>" ;
                   }
-                  //alert(JSON.stringify(data.OpeningTimes));
                   $("#restaurantName").empty();
                   $("#restaurantName").append(this.array[this.index].Name + "<br>");
                   $("#logo").empty();
@@ -409,4 +408,8 @@ function setupGeo(target){
   else {
     console.log("Geolocation API is not supported"); 
   }      
+}
+
+function getPercentageRating(rating){
+    return Math.round(rating * 100 / 6);
 }
