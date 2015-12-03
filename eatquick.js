@@ -2,6 +2,65 @@ var currentFoods = [];
 var clicks = 0;
 
 $(document).ready(function($){
+
+    var errors = 0;
+    var click_queue = [];
+
+    $("#fitts").click(function(e){
+        var button = document.elementFromPoint(e.clientX, e.clientY);
+        console.log(button.value);
+        // if we didnt click on a button increment the mistakes
+        if(button.value === undefined || button.value === null)
+        {
+            errors++;
+        }
+
+        else   // otherwise perform the fitts law calculations for this button click
+        {
+            var d = new Date();
+
+            // get the current click on the button
+            var current_click = {x:e.clientX, y:e.clientY , time: d.getTime()};
+
+            // add it to the queue of click events
+            click_queue.push(current_click);
+
+            // if the queue has 2 click events then we can measure the time and distance between them
+            // to add it to the fitts law array
+            if(click_queue.length == 2)
+            {
+                // dequeue the oldest click event
+                // this way we always have two click events that we measure distance  and time between
+                previous_click = click_queue.shift();
+
+                var x1 = previous_click.x;
+                var y1 = previous_click.y;
+
+                var x2 = current_click.x;
+                var y2 = current_click.y;
+
+                var distance = math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+                var time = (current_click.time - previous_click.time) / 1000.0;
+
+                var ID = getBaseLog(2, distance/ button.offsetWidth + 1);
+
+                fitts_entry = {time:time, ID:ID, color: color};
+                fitts.push(fitts_entry);
+
+                // delete the old diagrams and update it with the new
+                d3.select("svg").remove();
+                d3.select("svg").remove();
+
+                click_queue = [];
+                drawFittsDiagram(fitts);
+
+                drawErrorsDiagram(errors);
+
+            }
+        }
+    });
+
+
     Array.prototype.pushUnique = function (item){
         if(this.indexOf(item) == -1) {
             this.push(item);
@@ -440,3 +499,76 @@ function setupGeo(target){
 function getPercentageRating(rating){
     return Math.round(rating * 100 / 6);
 }
+
+
+function drawErrorsDiagram(data)
+{
+    var margin = {top: 20, right: 15, bottom: 60, left: 60}
+    width = 400 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .outerTickSize(0);
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .outerTickSize(0)
+        .tickFormat(d3.format("d"));
+
+    var svg = d3.select("#errors-graph").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+    x.domain(data.map(function(d) { return d.design; }));
+    y.domain([0, d3.max(data, function(d) { return d.errors; })]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end");
+
+    //Create Y axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .style("font-size","15px")
+        .attr("y", 0 - 40)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Errors");
+
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return x(d.design); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d.errors); })
+        .attr("height", function(d) { return height - y(d.errors); })
+        .style("fill", function(d){ return d.color; });
+
+}
+
+
