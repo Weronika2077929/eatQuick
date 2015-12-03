@@ -105,7 +105,7 @@ $(document).ready(function($){
 
     setupGeo('#locationInput'); 
     $("#searchForFoodButton").click(function(){
-	clicks++;
+	   clicks++;
 	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
       getRestaurantsForPostcode($("#locationInput").val());
         $("#filterByCuisineButton").show();
@@ -118,14 +118,14 @@ $(document).ready(function($){
       $("#searchFirstPage").show();
       $("#restaurantProfile").hide();
       $("#resultsContainer").hide();
-      click++; 
+      clicks++; 
   });
   $('#backFromDetailsButton').on('click', function(event) {
 
       $("#searchFirstPage").hide();
       $("#restaurantProfile").hide();
       $("#resultsContainer").show();
-      click++;
+      clicks++;
   });
     $('#filterByCuisineButton').on('click', function(event) {
 	clicks++;
@@ -158,12 +158,6 @@ $(document).ready(function($){
   $("#searchFirstPage").hide();
   $("#restaurantProfile").hide();
   $("#resultsContainer").show();
-
-	/*$("body, html").animate({ 
->>>>>>> fc396f075547284ceedab1355c82d78d60d8c9c6
-            scrollTop: $( $(this).attr('href') ).offset().top
-        }, 600);*/
-
       
     });
 
@@ -207,9 +201,10 @@ function refreshMap(what){
                   array: event.data.array,
                   headers: justEatApiHeaders()
               }).success(function (data) {
+                  console.log(JSON.stringify(data));
                   var openingTimes = "";
                   for(var i = 0; i < data.OpeningTimes.length; i++){
-                      openingTimes += data.OpeningTimes[i].Key + data.OpeningTimes[i].Open + "-" + data.OpeningTimes[i].Closed + "<br>" ;
+                      openingTimes += data.OpeningTimes[i].Key + ": "+ data.OpeningTimes[i].Open + "-" + data.OpeningTimes[i].Closed + "<br>" ;
                   }
                   $("#restaurantName").empty();
                   $("#restaurantName").append("<h1>" + this.array[this.index].Name + "</h1><br>");
@@ -223,9 +218,7 @@ function refreshMap(what){
                       zoom: 13});
                   var geocoder = new google.maps.Geocoder();
                   geocodeAddress(JSON.stringify(this.array[this.index].Postcode),geocoder,map);
-		  $("body, html").animate({ 
-            scrollTop: $( $(this).attr('href') ).offset().top 
-        }, 600);
+
                   console.log(JSON.stringify(data));
               }).error(function () {
                   console.log("Unable to get a valid response from Google Maps at postcode resolution.");
