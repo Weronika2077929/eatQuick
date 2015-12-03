@@ -267,12 +267,47 @@ function updateMap(postcodes) {
     var geocoder = new google.maps.Geocoder();
 
     console.log(postcodes);
-    for(var i =0; i< postcodes.length; i++) {
-        geocodeAddress(postcodes[i],geocoder,map);
+   var latLang;
+    var locations=[];
+    var items=postcodes.length;
+    var googleMapsApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    for(var i =0; i< items; i++) {
+        //var adr="Europe United Kingdom Glasgow ".concat(formal_addresses[i]);
+        //geocodeAddress(adr,geocoder,map,coords);
+        //console.log(adr);
+        var postcode=postcodes[i];
+        var apiUrl = googleMapsApiUrl + postcode + "&sensor=false";
+        jQuery.getJSON(apiUrl, function (data) {
+          latLang = data.results[0].geometry.location;
+          locations.push(latLang);
+          items=items-1;
+          if(items==0){
+            onDataReceived(locations,map);
+          }
+          
+    });
     }
 }
 
+function onDataReceived( n, map){
+    var bounds = new google.maps.LatLngBounds();
+    console.log(n);
+    for(var i =0; i < n.length; i++) {
+       
+       var marker = new google.maps.Marker({
+                map: map,
+                position: n[i]});
+	    	marker.setMap(map);
+        bounds.extend(marker.getPosition());
+       
+    }
+    map.fitBounds(bounds);
+    
+   
+    
+}
 
+/*
 function geocodeAddress(postcode,geocoder,map) {
     geocoder.geocode({'address': postcode}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
@@ -291,6 +326,7 @@ function geocodeAddress(postcode,geocoder,map) {
         }
     })
 }
+*/
 function getRestaurantsForPostcode(postcode){
   jQuery.ajax("https://public.je-apis.com/restaurants?q=" + postcode, {
     type: "GET",
