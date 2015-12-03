@@ -113,6 +113,20 @@ $(document).ready(function($){
         $("#cuisine").show();
     });
 
+  $('#backFromResultsButton').on('click', function(event) {
+
+      $("#searchFirstPage").show();
+      $("#restaurantProfile").hide();
+      $("#resultsContainer").hide();
+      click++; 
+  });
+  $('#backFromDetailsButton').on('click', function(event) {
+
+      $("#searchFirstPage").hide();
+      $("#restaurantProfile").hide();
+      $("#resultsContainer").show();
+      click++;
+  });
     $('#filterByCuisineButton').on('click', function(event) {
 	clicks++;
 
@@ -178,30 +192,6 @@ function refreshMap(what){
       "<div class='star-ratings-sprite'><span style='width:" + getPercentageRating(what[i].RatingStars) + "%' class='rating'></span></div><br>" +
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
-
-    //$("#resultbutton" + i).click({"index": i, "array": what, "url": "https://public.je-apis.com/restaurants/" + what[i]["Id"] + "/details"}, function(event){
-    //    jQuery.ajax(event.data["url"], {
-    //    type: "GET",
-    //    async: true,
-    //    index: event.data.index,
-    //    array: event.data.array,
-    //    headers: justEatApiHeaders()
-    //    }) .success(function( data ) {
-    //        //alert(JSON.stringify(data));
-    //        //alert(JSON.stringify(this.array[this.index]));
-    //        $("#restaurantName").empty();
-    //        $("#restaurantName").append(this.array[this.index].Name + "<br>");
-    //        $("#logo").empty();
-    //        $("#logo").append("<img src='"+ this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
-    //        $("#restaurantDescription").empty();
-    //        $("#restaurantDescription").append(data.Description + "<br>");
-    //
-    //
-    //        console.log(JSON.stringify(data));
-    //    }) .error(function() {
-    //        console.log("Unable to get a valid response from Google Maps at postcode resolution.");
-    //  });
-    //});
 
       $("#resultbutton" + i).click({"index": i, "array": what}, function (event) {
 	       clicks++;
