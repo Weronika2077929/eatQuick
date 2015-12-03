@@ -196,10 +196,10 @@ function refreshMap(what){
     //});
 
       $("#resultbutton" + i).click({"index": i, "array": what}, function (event) {
-	clicks++;
-      $("#searchFirstPage").hide();
-      $("#restaurantProfile").show();
-      $("#resultsContainer").hide();
+	       clicks++;
+        $("#searchFirstPage").hide();
+        $("#restaurantProfile").show();
+        $("#resultsContainer").hide();
 
 	//document.getElementById("countField").innerHTML=clicks;     // USED FOR TESTING
           $.when(
