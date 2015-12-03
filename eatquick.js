@@ -5,6 +5,7 @@ $(document).ready(function($){
 
     var errors = 0;
     var click_queue = [];
+    var fitts = [];
 
     $("#fitts").click(function(e){
         var button = document.elementFromPoint(e.clientX, e.clientY);
@@ -12,6 +13,7 @@ $(document).ready(function($){
         // if we didnt click on a button increment the mistakes
         if(button.value === undefined || button.value === null)
         {
+            console.log(errors);
             errors++;
         }
 
@@ -44,20 +46,19 @@ $(document).ready(function($){
 
                 var ID = getBaseLog(2, distance/ button.offsetWidth + 1);
 
-                fitts_entry = {time:time, ID:ID, color: color};
+                fitts_entry = {time:time, ID:ID, color: "red"};
                 fitts.push(fitts_entry);
 
                 // delete the old diagrams and update it with the new
-                d3.select("svg").remove();
-                d3.select("svg").remove();
-
-                click_queue = [];
-                drawFittsDiagram(fitts);
-
-                drawErrorsDiagram(errors);
 
             }
         }
+
+        d3.select("svg").remove();
+        d3.select("svg").remove();
+
+        drawFittsDiagram(fitts);
+        drawErrorsDiagram(errors);
     });
 
 
@@ -501,10 +502,13 @@ function getPercentageRating(rating){
 }
 
 
-function drawErrorsDiagram(data)
+function drawErrorsDiagram(errors)
 {
+    var data = [];
+    data.push({"errors" :errors});
+
     var margin = {top: 20, right: 15, bottom: 60, left: 60}
-    width = 400 - margin.left - margin.right,
+    width = 200 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -563,12 +567,100 @@ function drawErrorsDiagram(data)
         .data(data)
         .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) { return x(d.design); })
+        .attr("x", function(d) { return x("Errors"); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.errors); })
         .attr("height", function(d) { return height - y(d.errors); })
-        .style("fill", function(d){ return d.color; });
+        .style("fill", function(d){ return "red"; });
 
 }
 
+// takes data from the array and draws the fitts law diagram for the 3 different designs
+function drawFittsDiagram(data)
+{
+    var margin = {top: 20, right: 15, bottom: 60, left: 60}
+        , width = 800 - margin.left - margin.right
+        , height = 500 - margin.top - margin.bottom;
 
+    var x = d3.scale.linear()
+        .domain([0, d3.max(data, function(d) { return d.ID; })])
+        .range([ 0, width - 100]);
+
+    var y = d3.scale.linear()
+        .domain([0, d3.max(data, function(d) { return d.time; })])
+        .range([ height, 0 ]);
+
+    var chart = d3.select('#fitts-graph')
+        .append('svg:svg')
+        .attr('width', width + margin.right + margin.left)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('class', 'chart');
+
+    var main = chart.append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('class', 'main');
+
+    // draw the x axis
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient('bottom')
+        .innerTickSize(-height)
+        .outerTickSize(0)
+        .tickPadding(10);
+
+    main.append('g')
+        .attr('transform', 'translate(0,' + height + ')')
+        .attr('class', 'main axis date')
+        .call(xAxis);
+
+    // draw the y axis
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient('left')
+        .innerTickSize(-width + 100)
+        .outerTickSize(0)
+        .tickPadding(10);
+
+    main.append('g')
+        .attr('transform', 'translate(0,0)')
+        .attr('class', 'main axis date')
+        .call(yAxis);
+
+    var g = main.append("svg:g");
+
+    g.selectAll("scatter-dots")
+        .data(data)
+        .enter().append("svg:circle")
+        .attr("cx", function (d,i) { return x(d.ID); } )
+        .attr("cy", function (d) { return y(d.time); } )
+        .style("fill", function(d){ return d.color; })
+        .attr("r", 4);
+
+
+    //Create X axis label
+    main.append("text")
+        .attr("x", (width - 100) / 2 )
+        .attr("y",  height + 40)
+        .style("font-size","15px")
+        .style("text-anchor", "middle")
+        .text("Index of Difficulty");
+
+    //Create Y axis label
+    main.append("text")
+        .attr("transform", "rotate(-90)")
+        .style("font-size","15px")
+        .style("font-size","15px")
+        .attr("y", 0 - 60)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Time(s)");
+}
+
+
+function getBaseLog(x, y)
+{
+    return Math.log(y) / Math.log(x);
+}
