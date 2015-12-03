@@ -186,7 +186,7 @@ function refreshMap(what){
   for(var i = 0; i < what.length; i++){
     string = string + what[i].Name + ", "
       //$("#searchResults").append("<a id='resultbutton" + i + "''>" + what[i].Name + "</a><br/>")
-      $("#searchResults").append("<div  id='resultbutton" + i + "'' class='panel panel-success'><div class='panel-heading'><a style=\"font-weight: bold; font-size: 14pt;\">" + what[i].Name + "</a></div><div class='panel-body'><table width=100%><tr><td>"+
+      $("#searchResults").append("<div  id='resultbutton" + i + "'' class='panel panel-success' style='cursor: pointer;'><div class='panel-heading'><a style=\"font-weight: bold; font-size: 14pt;\">" + what[i].Name + "</a></div><div class='panel-body'><table width=100%><tr><td>"+
       what[i].Address+ "<br>"+
       what[i].Postcode + "<br>" +
       "<div class='star-ratings-sprite'><span style='width:" + getPercentageRating(what[i].RatingStars) + "%' class='rating'></span></div></td><td style='text-align: right;'><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/></td></tr></table>" +
