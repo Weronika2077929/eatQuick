@@ -189,11 +189,11 @@ function refreshMap(what){
                       openingTimes += data.OpeningTimes[i].Key + data.OpeningTimes[i].Open + "-" + data.OpeningTimes[i].Closed + "<br>" ;
                   }
                   $("#restaurantName").empty();
-                  $("#restaurantName").append(this.array[this.index].Name + "<br>");
+                  $("#restaurantName").append("<h1>" + this.array[this.index].Name + "</h1><br>");
                   $("#logo").empty();
-                  $("#logo").append("<img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
+                  $("#logo").append("<center><img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/></center>");
                   $("#restaurantDescription").empty();
-                  $("#restaurantDescription").append(data.Description + "<br>" + openingTimes);
+                  $("#restaurantDescription").append(data.Description + "<br><br><strong> Opening Times</strong> <br> " + openingTimes);
 
                   // add the map2 marker
                   var map = new google.maps.Map(document.getElementById('googleMap2'), {
