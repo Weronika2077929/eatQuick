@@ -134,6 +134,12 @@ function refreshMap(what){
                   $("#logo").append("<img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
                   $("#restaurantDescription").empty();
                   $("#restaurantDescription").append(data.Description + "<br>" + openingTimes);
+
+                  // add the map2 marker
+                  var map = new google.maps.Map(document.getElementById('googleMap2'), {
+                      zoom: 13});
+                  var geocoder = new google.maps.Geocoder();
+                  geocodeAddress(JSON.stringify(this.array[this.index].Postcode),geocoder,map);
 		  $("body, html").animate({ 
             scrollTop: $( $(this).attr('href') ).offset().top 
         }, 600);
@@ -167,6 +173,27 @@ function refreshMap(what){
 
 
   }
+}
+
+function geocodeAddress(postcode,geocoder,map) {
+    geocoder.geocode({'address': postcode}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location});
+
+            bounds.extend(marker.getPosition());
+        }
+        else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+            setTimeout(function () {
+                geocodeAddress(postcode, geocoder, map);
+            }, 0.1);
+        }
+        else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    })
 }
 
 function refreshCuisineList(cuisines){
@@ -310,7 +337,7 @@ function onDataReceived( n, map){
     var bounds = new google.maps.LatLngBounds();
     console.log(n);
     for(var i =0; i < n.length; i++) {
-       
+
        var marker = new google.maps.Marker({
                 map: map,
                 position: n[i]});
