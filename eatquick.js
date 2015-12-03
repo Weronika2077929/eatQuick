@@ -236,7 +236,6 @@ function refreshMap(what){
                   array: event.data.array,
                   headers: justEatApiHeaders()
               }).success(function (data) {
-                  alert(JSON.stringify(data));  
                   console.log(JSON.stringify(data));
                   var i = 0; 
                   while(i < 3){
@@ -280,7 +279,7 @@ function geocodeAddress(postcode,geocoder,map) {
             }, 0.1);
         }
         else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            //alert('Geocode was not successful for the following reason: ' + status);
         }
     })
 }
