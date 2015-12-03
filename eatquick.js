@@ -219,32 +219,43 @@ function refreshMap(what){
                   var geocoder = new google.maps.Geocoder();
                   geocodeAddress(JSON.stringify(this.array[this.index].Postcode),geocoder,map);
 
-                  console.log(JSON.stringify(data));
+                  $("#resaddress").empty(); 
+                  $("#resaddress").append(this.array[this.index].Address + "<br/>" + this.array[this.index].City + "<br/>" + this.array[this.index].Postcode); 
+
+                  $("#resphone").empty(); 
+                  $("#resphone").append("<br/><a href=\"" + this.array[this.index].Url +"\">Open on JustEat</a>"); 
+
+                  console.log(JSON.stringify(this.array[this.index]));
               }).error(function () {
                   console.log("Unable to get a valid response from Google Maps at postcode resolution.");
               }),
-              $.ajax("https://public.je-apis.com/restaurants/" + event.data.array[event.data.index]["Id"] + "/reviews", {
+              $.ajax("https://public.je-apis.com/restaurants/" + event.data.array[event.data.index]["Id"] + "/reviews?p=0&s=3", {
                   type: "GET",
                   async: true,
                   index: event.data.index,
                   array: event.data.array,
                   headers: justEatApiHeaders()
               }).success(function (data) {
-                  //alert(JSON.stringify(data));
-                  //alert(JSON.stringify(this.array[this.index]));
-                  $("#restaurantName").empty();
-                  $("#restaurantName").append(this.array[this.index].Name + "<br>");
-                  $("#logo").empty();
-                  $("#logo").append("<img src='" + this.array[this.index].Logo[0].StandardResolutionURL + "'/>");
-                  $("#restaurantDescription").empty();
-                  $("#restaurantDescription").append(data.Description + "<br>");
+                  alert(JSON.stringify(data));  
                   console.log(JSON.stringify(data));
+                  var i = 0; 
+                  while(i < 3){
+                    try{
+                      $("#review" + (i+1) + "name").empty(); 
+                      $("#review" + (i+1) + "name").append(data.Reviews[i].CustomerName + " from " + data.Reviews[i].CustomerCity);
+                      $("#review" + (i+1) + "body").empty(); 
+                      $("#review" + (i+1) + "body").append(data.Reviews[i].CustomerComments);
+                    } 
+                    catch(err){
+                    }
+                    i = i+1; 
+                  }
+                  
               }).error(function () {
-                  console.log("Unable to get a valid response from Google Maps at postcode resolution.");
+                  console.log("Unable to get reviews");
               })
           ).done(function (a1, a2) {
-                  alert("We got what we came for!");
-              })
+          })
       });
 
 
@@ -258,8 +269,10 @@ function geocodeAddress(postcode,geocoder,map) {
             var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location});
-
-            bounds.extend(marker.getPosition());
+            try {
+              bounds.extend(marker.getPosition());
+            }
+            catch(err){}
         }
         else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
             setTimeout(function () {
