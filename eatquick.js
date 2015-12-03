@@ -3,11 +3,14 @@ var clicks = 0;
 
 $(document).ready(function($){
 
+    var all_clicks = 0;
     var errors = 0;
     var click_queue = [];
     var fitts = [];
 
     $("#fitts").click(function(e){
+        all_clicks++;
+
         var button = document.elementFromPoint(e.clientX, e.clientY);
         console.log(button.value);
         // if we didnt click on a button increment the mistakes
@@ -58,7 +61,12 @@ $(document).ready(function($){
         d3.select("svg").remove();
 
         drawFittsDiagram(fitts);
-        drawErrorsDiagram(errors);
+
+        var data = [];
+        error_data = [{design: "Errors" , errors: errors, color: "red"},
+            {design: "All clicks" , errors: all_clicks, color: "green"}];
+
+        drawErrorsDiagram(error_data);
     });
 
 
@@ -502,13 +510,10 @@ function getPercentageRating(rating){
 }
 
 
-function drawErrorsDiagram(errors)
+function drawErrorsDiagram(data)
 {
-    var data = [];
-    data.push({"errors" :errors});
-
     var margin = {top: 20, right: 15, bottom: 60, left: 60}
-    width = 200 - margin.left - margin.right,
+    width = 400 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -560,20 +565,20 @@ function drawErrorsDiagram(errors)
         .attr("y", 0 - 40)
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Errors");
+        .style("text-anchor", "middle");
 
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) { return x("Errors"); })
+        .attr("x", function(d) { return x(d.design); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.errors); })
         .attr("height", function(d) { return height - y(d.errors); })
-        .style("fill", function(d){ return "red"; });
+        .style("fill", function(d){ return d.color; });
 
 }
+
 
 // takes data from the array and draws the fitts law diagram for the 3 different designs
 function drawFittsDiagram(data)
