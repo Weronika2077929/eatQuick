@@ -84,7 +84,7 @@ function refreshMap(what){
       $("#searchResults").append("<div class='panel panel-success'><div class='panel-heading'><a id='resultbutton" + i + "'' href=\"#restaurantProfile\">" + what[i].Name + "</a></div><div class='panel-body'>"+
       what[i].Address+ "<br>"+
       what[i].Postcode + "<br>" +
-      "<div class='star-ratings-sprite'><span style='width:" + getPercentageRating(what[i].RatingStars) + "%' class='rating'></span></div>" +
+      "<div class='star-ratings-sprite'><span style='width:" + getPercentageRating(what[i].RatingStars) + "%' class='rating'></span></div><br>" +
       "<br><img src='"+ what[i].Logo[0].StandardResolutionURL + "'/>" +
       "</div></div>");
 
