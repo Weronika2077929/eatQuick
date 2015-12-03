@@ -112,8 +112,9 @@ $(document).ready(function($){
           checkedItems.push($(li).text());
       });
 
-	refreshMap(filterByCuisine(currentFoods,checkedItems));
 
+	//refreshMap(orderByName(filterByCuisine(currentFoods,checkedItems)));
+        refreshMap(orderByRating(filterByCuisine(currentFoods,checkedItems)));
 
 	$("body, html").animate({ 
             scrollTop: $( $(this).attr('href') ).offset().top
@@ -663,4 +664,16 @@ function drawFittsDiagram(data)
 function getBaseLog(x, y)
 {
     return Math.log(y) / Math.log(x);
+}
+
+function orderByName(array){
+    return array.sort(function(a,b){
+        return a.Name.localeCompare(b.Name);
+    });
+}
+
+function orderByRating(array){
+    return array.sort(function(a,b){
+        return b.RatingStars - a.RatingStars;
+    });
 }
