@@ -133,6 +133,14 @@ $(document).ready(function($){
       }
 
 	refreshMap(filterByCuisine(currentFoods,checkedItems));
+        $("#orderByName").click(function(e){
+            refreshMap(orderByName(filterByCuisine(currentFoods,checkedItems)));
+        });
+
+        $("#orderByRating").click(function(e){
+            refreshMap(orderByRating(filterByCuisine(currentFoods,checkedItems)));
+        });
+
   $("#searchFirstPage").hide();
   $("#restaurantProfile").hide();
   $("#resultsContainer").show();

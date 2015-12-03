@@ -170,7 +170,21 @@
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading" id="resultBlock" align="center">
-                        <strong>Results</strong>
+                        <h2><strong>Results</strong></h2>
+
+                        <!-- Single button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Order by <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a id="orderByName">Order by Name</a></li>
+                                <li><a id="orderByRating">Order by Rating</a></li>
+                            </ul>
+                        </div>
+
+
+
                     </div>
                     <div class="panel-body">
                         <!--displaying the list of the restaurants-->
