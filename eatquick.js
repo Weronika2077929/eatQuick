@@ -271,25 +271,32 @@ function updateMap(postcodes) {
     var locations=[];
     var items=postcodes.length;
     var googleMapsApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-    for(var i =0; i< items; i++) {
+    for(var i =0; i< postcodes.length; i++) {
         //var adr="Europe United Kingdom Glasgow ".concat(formal_addresses[i]);
         //geocodeAddress(adr,geocoder,map,coords);
         //console.log(adr);
         var postcode=postcodes[i];
         var apiUrl = googleMapsApiUrl + postcode + "&sensor=false";
         jQuery.getJSON(apiUrl, function (data) {
-          latLang = data.results[0].geometry.location;
-          locations.push(latLang);
-          items=items-1;
-          if(items==0){
-            onDataReceived(locations,map);
-          }
-          
+            if(data.results[0] === undefined) {
+                console.log("undefined");
+            }
+            else {
+                latLang = data.results[0].geometry.location;
+                locations.push(latLang);
+            }
+
+            items=items-1;
+            if(items==0){
+                onDataReceived(locations,map);
+            }
+
     });
     }
 }
 
 function onDataReceived( n, map){
+    console.log("aaaaaaaaaa");
     var bounds = new google.maps.LatLngBounds();
     console.log(n);
     for(var i =0; i < n.length; i++) {
