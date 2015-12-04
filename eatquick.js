@@ -372,19 +372,20 @@ function filterByCuisine(restaurants,cuisines){
     for(var j = 0; j < restaurants[i].CuisineTypes.length && !stop; j++){
       if(cuisines.indexOf(restaurants[i].CuisineTypes[j]["Name"]) != -1){
         stop = true; 
-        newArray.push(restaurants[i]);
+        newArray.push(restaurants[i]);  //modified
         postcodes.pushUnique(restaurants[i].Postcode);
       }
     }
   }
-
-    updateMap(postcodes);
+    console.log(newArray);
+    updateMap(postcodes,newArray);  //modified
   return newArray; 
 }
 
-function updateMap(postcodes) {
+function updateMap(postcodes,restaurants) {     //modified
     var myLatLng = {lat: 55.858465, lng: -4.269292};
-
+    console.log('----------------------------------');
+    console.log(restaurants);
     var map = new google.maps.Map(document.getElementById('googleMap'), {
         center: myLatLng,
         zoom: 13});
@@ -394,13 +395,17 @@ function updateMap(postcodes) {
     console.log(postcodes);
    var latLang;
     var locations=[];
-    var items=postcodes.length;
+    var places=[];  //modified
+    var items=0;
     var googleMapsApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     for(var i =0; i< postcodes.length; i++) {
         //var adr="Europe United Kingdom Glasgow ".concat(formal_addresses[i]);
         //geocodeAddress(adr,geocoder,map,coords);
         //console.log(adr);
         var postcode=postcodes[i];
+        var est=restaurants[i];
+        console.log('****************');
+        console.log(est);
         var apiUrl = googleMapsApiUrl + postcode + "&sensor=false";
         jQuery.getJSON(apiUrl, function (data) {
             if(data.results[0] === undefined) {
@@ -409,34 +414,54 @@ function updateMap(postcodes) {
             else {
                 latLang = data.results[0].geometry.location;
                 locations.push(latLang);
+                places.push(restaurants[items]);  //modified
             }
 
-            items=items-1;
-            if(items==0){
-                onDataReceived(locations,map);
+            items=items+1;
+            if(items==postcodes.length){
+                console.log(places);
+                onDataReceived(locations,places,map);  //modified
             }
 
     });
     }
 }
 
-function onDataReceived( n, map){
+function onDataReceived( n,places, map){       //modified
     console.log("aaaaaaaaaa");
+    console.log('--------------');
+    console.log(places);
     var bounds = new google.maps.LatLngBounds();
     console.log(n);
+    infoWindow = new google.maps.InfoWindow({map: map});
     for(var i =0; i < n.length; i++) {
-
+      console.log(places[i]);
+       
        var marker = new google.maps.Marker({
                 map: map,
                 position: n[i]});
 	    	marker.setMap(map);
         bounds.extend(marker.getPosition());
+        addInfo(marker,places[i]);
+  
        
-    }
+    } 
     map.fitBounds(bounds);
-    
-   
-    
+
+}
+
+function addInfo(marker,place){
+   var name=place.Name;            //modified
+   var image=place.Logo[0].StandardResolutionURL;
+  //console.log(mess);
+  var infowindow = new google.maps.InfoWindow({
+    content:"<div style=\"width: 200px;color:red;background:skyblue;\">"+"<b>"+ name +"   "+"</b>"  +"<img style=\"width: 30px;height:30px;\" src=\""+image+"\">"+"</div>"
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(marker.get('map'), marker);
+  });
+
 }
 
 /*
